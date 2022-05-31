@@ -10,7 +10,6 @@ bot = telebot.TeleBot(bot_token)  # Создаем экземпляр бота
 
 def get_anekdot():  #вытаскиваем анекдот с сайта
     array_anekdots = []
-    z = ''
     s = requests.get('https://nekdo.ru/random/')
     soup = bs4.BeautifulSoup(s.text, "html.parser")
     result_find = soup.select('.text')
@@ -18,12 +17,14 @@ def get_anekdot():  #вытаскиваем анекдот с сайта
         array_anekdots.append(result.getText().strip())
     return array_anekdots[0]
 
-def get_weather(city, tok):  #вытаскиваем погоду с сайта
-    city = input('Введите название города')
-    tok = weather_token
-    r = requests.get(f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={tok}')
-    data = r.json()
-    print (data)
+#def get_anime():  #вытаскиваем тайтл с сайта (ps не вытаскиваем, сайт не даёт название)
+    #array_anime = []
+    #s = requests.get('https://anime777.ru/random/')
+    #soup = bs4.BeautifulSoup(s.text, "html.parser")
+    #result_find = soup.select('.text')
+    #for result in result_find:
+     #   array_anime.append(result.getText().strip())
+    #return array_anime[0]
 
 def dz_1():
     name = "roma"
@@ -31,5 +32,7 @@ def dz_1():
 def dz_2():
     age = 17
     name = "roma"
-    c = ('my name is', name, 'and im', age)
+    c = ('my name is roma and im 18')
     return c
+
+#https://anime777.ru/random

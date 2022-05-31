@@ -7,7 +7,6 @@ from conf import weather_token #токен для парсинга погоды
 import requests # Требуется для "Прислать собаку"
 import bs4 # требуется для get_anekdot()
 from handler import get_anekdot
-from handler import get_weather
 from handler import dz_1
 from handler import dz_2
 import game
@@ -88,7 +87,7 @@ def get_text_messages(message):
     chat_id = message.chat.id
     ms_text = message.text
 
-    if ms_text == "Главное меню" or ms_text == "Main menu" or ms_text == "Back to menu":
+    if ms_text == "Главное меню" or ms_text == "Main menu" or ms_text == "Back to menu" or ms_text == "/menu":
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         btn1 = types.KeyboardButton("Some gags")
         btn2 = types.KeyboardButton("Game")
@@ -114,17 +113,39 @@ def get_text_messages(message):
     elif ms_text == "Some gags":
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         btn1 = types.KeyboardButton("random dog")
-        btn2 = types.KeyboardButton("get gag")
+        btn2 = types.KeyboardButton("ur waifu today")
+        btn3 = types.KeyboardButton("get gag")
         back = types.KeyboardButton("Back to menu")
-        markup.add(btn1, btn2, back)
+        markup.add(btn1, btn2, btn3, back)
         bot.send_message(chat_id, text="This is gags menu", reply_markup=markup)
 
-    elif ms_text == "/dog" or ms_text == "random dog":
+    elif ms_text == "/dog" or ms_text == "random dog":   #генерация собаки
         contents = requests.get('https://random.dog/woof.json').json()
         urlDOG = contents['url']
         bot.send_photo(chat_id, photo=urlDOG, caption="lol, that ur good boy")
 
-    elif ms_text == "get gag":
+    elif ms_text == "/waifu" or ms_text == "ur waifu today": #генерация аниме картинок по разным категориям
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        btn1 = types.KeyboardButton("classic")
+        btn2 = types.KeyboardButton("neko")
+        btn3 = types.KeyboardButton("cringe")
+        back = types.KeyboardButton("Back to menu")
+        markup.add(btn1, btn2, btn3, back)
+        bot.send_message(chat_id, text="choose waifu type", reply_markup=markup)
+    elif ms_text == "/animegirl" or ms_text == "classic":
+        contents = requests.get('https://waifu.pics/api/sfw/waifu').json()
+        urlWAIFU = contents['url']
+        bot.send_photo(chat_id, photo=urlWAIFU, caption="that's ur waifu today bro")
+    elif ms_text == "/neko" or ms_text == "neko":
+        contents = requests.get('https://waifu.pics/api/sfw/neko').json()
+        urlWAIFU = contents['url']
+        bot.send_photo(chat_id, photo=urlWAIFU, caption="that's ur neko today bro")
+    elif ms_text == "/bruh" or ms_text == "cringe":
+        contents = requests.get('https://waifu.pics/api/sfw/cringe').json()
+        urlWAIFU = contents['url']
+        bot.send_photo(chat_id, photo=urlWAIFU, caption="bruuuuh")
+
+    elif ms_text == "get gag" or ms_text == "/gag":
         bot.send_message(chat_id, text=get_anekdot())
 
     elif ms_text == "Game":
@@ -133,7 +154,8 @@ def get_text_messages(message):
 
 
     elif ms_text == "Settings":
-        bot.send_message(chat_id, text="not ready")
+        bot.send_message(chat_id, text="by matome, v1.1 \n commands: \n /start \n /menu "
+                                       "\n /dog \n /bruh \n /neko \n /waifu \n /gag \n /animegirl \n /help")
 
     elif ms_text == "Help" or ms_text == "/help":
         bot.send_message(chat_id, "by matome \nfor ask: \n@matxme")
